@@ -3,7 +3,7 @@
 }
 
 .App-logo {
-  height: 40vmin;
+  height: 10vmin;
   pointer-events: none;
 }
 
@@ -12,16 +12,39 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
-
+.prueba-cc{
+  background-color: red;
+}
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+  min-height: 10vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+}
+.opc-menu{
+  background-color: rgba(3, 20, 121, 0.8);
+  color: black;
+  justify-content: center;
+  font-weight: 300;
+  align-items: center;
+  font-size: calc(10px + 1vmin);
+  min-height: 10vh;
+}
+.opc-menu:hover{
+  background-color: red;
+  color: #ffffff;
+  cursor: pointer;
+}
+.App-dasboard {
+  position: fixed;
+  display: flex;
+  background-color: rgba(3, 20, 121, 0.8);
+  height: 100%;
+  float: left;
 }
 
 .App-link {
