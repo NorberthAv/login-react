@@ -1,19 +1,51 @@
 .App {
   text-align: center;
 }
-
+.user-logo{
+  height: 20vmin;
+  pointer-events: none;
+}
 .App-logo {
   height: 10vmin;
   pointer-events: none;
 }
-
+.labels{
+  text-align: left !important;
+  margin-bottom: 2%;
+}
+.btn-separar{
+  float: right;
+  margin: 1%;
+}
+.fondo{
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url("../public/img/rohit-choudhari-puy-FW4fOJc-unsplash.jpg");
+}
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
+  .user-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
 }
-.prueba-cc{
-  background-color: red;
+.dashboard{
+  /* border-right: 1px solid black; */
+  box-Shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+.expansor{
+  min-height: 90vh;
+}
+.card-login{
+  /* text-align: justify; */
+  margin: 15%;
+}
+.dashboard > ul {
+
+  position: fixed;
+  height: 100%;
+  left: 7%;
 }
 .App-header {
   background-color: #282c34;
