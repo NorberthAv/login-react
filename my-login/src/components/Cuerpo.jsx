@@ -5,10 +5,10 @@ import { LoginForm } from './Login-Register';
 
 
 
-export function Body(){
- 
+export function Body_espacio(){
+
     return <div className='container expansor'>
-        <LoginForm/>
+        <LoginForm />
     </div> 
 
 }

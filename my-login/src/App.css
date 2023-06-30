@@ -1,5 +1,11 @@
 .App {
   text-align: center;
+
+}
+.fondo{
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url("../public/img/rohit-choudhari-puy-FW4fOJc-unsplash.jpg");
 }
 .user-logo{
   height: 20vmin;
@@ -17,11 +23,7 @@
   float: right;
   margin: 1%;
 }
-.fondo{
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-image: url("../public/img/rohit-choudhari-puy-FW4fOJc-unsplash.jpg");
-}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -32,6 +34,8 @@
 }
 .dashboard{
   /* border-right: 1px solid black; */
+  min-height: 100%;
+  background-color: #ffffff;
   box-Shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 .expansor{
@@ -44,7 +48,7 @@
 .dashboard > ul {
 
   position: fixed;
-  height: 100%;
+  /* min-height: 100vh; */
   left: 7%;
 }
 .App-header {

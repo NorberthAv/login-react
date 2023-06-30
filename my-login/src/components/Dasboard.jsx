@@ -1,4 +1,4 @@
-import {Body} from './Cuerpo';
+import {Body_espacio} from './Cuerpo';
 import logo from './../logo.svg';
 const name = 'Norberth'
 
@@ -29,9 +29,10 @@ const DashboardVertical = () => {
                 </a>
               </li>
             </ul>
+            <br />
           </div>
           <div className="col-xs-8 col-sm-9">
-            <Body />
+            <Body_espacio />
           </div>
         </div>
       </div>

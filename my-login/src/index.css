@@ -6,7 +6,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+.fondo{
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url("../public/img/rohit-choudhari-puy-FW4fOJc-unsplash.jpg");
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

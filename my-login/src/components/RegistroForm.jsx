@@ -3,6 +3,7 @@ import { Form, Button } from 'react-bootstrap';
 
 function RegistroForm() {
   const [nombreCompleto, setNombreCompleto] = useState('');
+  const [UserName,setUserName] = useState('');
   const [fechaNacimiento, setFechaNacimiento] = useState('');
   const [genero, setGenero] = useState('');
   const [email, setEmail] = useState('');
@@ -24,6 +25,15 @@ function RegistroForm() {
           placeholder="Escribe tu nombre completo"
           value={nombreCompleto}
           onChange={(event) => setNombreCompleto(event.target.value)}
+        />
+      </Form.Group>
+      <Form.Group className="labels" controlId="UserName">
+       <b><Form.Label >Nombre completo:</Form.Label></b> 
+        <Form.Control
+          type="text"
+          placeholder="Escribe tu nombre de Usuario"
+          value={UserName}
+          onChange={(event) => setUserName(event.target.value)}
         />
       </Form.Group>
 

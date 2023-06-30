@@ -1,29 +1,41 @@
 import logo from './logo.svg';
 import './App.css';
-import { useState } from 'react';
+import { GlobalProvider } from './Context/GlobalContext';
+import { useState,useContext , useEffect } from 'react';
 import {Header} from './components/Header';
-import {Body} from './components/Cuerpo';
+import {Body_espacio} from './components/Cuerpo';
 import DashboardVertical from './components/Dasboard';
+import { GlobalContext } from './../Context/GlobalContext';
+const { Session, updateGlobalVariable } = useContext(GlobalContext)
+
+// export let [Session, setSession] = useState('');
+export const actualizarBandeja = (res) => {
+  return res
+};
+
 
 function App() {
-const [Session, setSession] = useState('');
- const actualizarBandeja = (res) => {
-    setSession(res);
-  };
+
+  
+  
   function validarSeccion(){
-    if (Session == true) {
+    if (Session != []) {
       return <>
       <Header/>
-      <DashboardVertical/>
+      <DashboardVertical />
       </>
     }else{
-      return <><Body/> </>
+      return <>
+      <Header/>
+      <Body_espacio />
+      <br/> </>
     }
 } 
   return (
-    <div className="App">
-  
+    <div className="App fondo">
+    <GlobalProvider>
     {validarSeccion()}
+    </GlobalProvider>
     </div>
   );
 }
