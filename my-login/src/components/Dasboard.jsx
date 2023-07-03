@@ -1,8 +1,12 @@
 import {Body_espacio} from './Cuerpo';
+import { useState ,useContext  } from 'react';
 import logo from './../logo.svg';
-const name = 'Norberth'
+import { GlobalContext } from './../Context/GlobalContext';
+
 
 const DashboardVertical = () => {
+const { Session, updateGlobalVariable } = useContext(GlobalContext)
+const name = Session[0].data.user ? Session[0].data.user : 'No esta Conectado'
     return (
       <div className="container-fluid">
         <div className="row">

@@ -10,7 +10,7 @@ function LoginForm() {
   const { Session, updateGlobalVariable } = useContext(GlobalContext)
 
   const [error, setError] = useState(false);
-  const [email, setEmail] = useState('');
+  // const [email, setEmail] = useState('');
   const [UserName, setUserName] = useState('');
   const [password, setPassword] = useState('');
 
@@ -25,13 +25,13 @@ function LoginForm() {
     setError(false)
 
     let parametros = {
-      email: email,
+      // email: email,
       userName: UserName,
       password: password,
     }
     try {
       const response = await axios.post('http://localhost:4000/api/login', {
-        email: email,
+        // email: email,
         userName: UserName,
         password: password,
       });
@@ -54,7 +54,7 @@ function LoginForm() {
     <>
 
     <Form onSubmit={handleSubmit}>
-      <Form.Group className="labels"  controlId="email">
+      {/* <Form.Group className="labels"  controlId="email">
        <b><Form.Label>Correo electrónico:</Form.Label></b>
         <Form.Control
           type="email"
@@ -63,9 +63,9 @@ function LoginForm() {
           value={email}
           onChange={(event) => setEmail(event.target.value)}
         />
-      </Form.Group>
+      </Form.Group> */}
       <Form.Group className="labels" controlId="UserName">
-       <b><Form.Label >Usuario:</Form.Label></b> 
+       <b><Form.Label >Usuario / Correo:</Form.Label></b> 
         <Form.Control
           type="text"
           placeholder="Escribe tu nombre de Usuario"

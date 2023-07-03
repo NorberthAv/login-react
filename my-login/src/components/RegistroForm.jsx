@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
+import axios from 'axios';
 
 function RegistroForm() {
+  const [error, setError] = useState(false);
   const [nombreCompleto, setNombreCompleto] = useState('');
   const [UserName,setUserName] = useState('');
   const [fechaNacimiento, setFechaNacimiento] = useState('');
@@ -10,13 +12,38 @@ function RegistroForm() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(`Nombre completo: ${nombreCompleto}\nFecha de nacimiento: ${fechaNacimiento}\nGénero: ${genero}\nEmail: ${email}\nContraseña: ${password}`);
+
     // Aquí puedes enviar los datos al servidor
+   
+
+    if(password != confirmPassword){
+      setError(true)
+      return
+    }
+    setError(false)
+    try {
+      const response = await axios.post('http://localhost:4000/api/usuarios', {
+        nombreCompleto: nombreCompleto,
+        UserName: UserName,
+        fechaNacimiento: fechaNacimiento,
+        genero: genero,
+        email: email,
+        password: password,
+      });
+      console.log(response);
+     
+      // Aquí puedes procesar la respuesta del servidor
+    } catch (error) {
+      console.error(error);
+      // Aquí puedes mostrar un mensaje de error al usuario
+    }
+ 
   };
 
   return (
+    <>
     <Form onSubmit={handleSubmit}>
       <Form.Group className="labels" controlId="nombreCompleto">
        <b><Form.Label >Nombre completo:</Form.Label></b> 
@@ -28,7 +55,7 @@ function RegistroForm() {
         />
       </Form.Group>
       <Form.Group className="labels" controlId="UserName">
-       <b><Form.Label >Nombre completo:</Form.Label></b> 
+       <b><Form.Label >Usuario:</Form.Label></b> 
         <Form.Control
           type="text"
           placeholder="Escribe tu nombre de Usuario"
@@ -90,6 +117,9 @@ function RegistroForm() {
         Registrarse
       </Button>
     </Form>
+    <br />
+     {error && <p>La Contraseña no Coincide</p>}
+     </>
   );
 }
 
