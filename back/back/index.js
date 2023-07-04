@@ -1,8 +1,10 @@
 const express = require('express')
 const cors = require('cors')
+const JWT  = required('jsonwebtoken')
 const mysql = require('mysql')
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser')
+
 const app = express()
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -16,7 +18,21 @@ const pool = mysql.createPool({
   password: '',
   database: 'bd_login'
 })
+const TOKEN_KEY ="y6P4xzc9wfyMzlEe2oaPcmqxFfTe691mGx4oanFQ6RU=";
 
+const verifyToken = (req, res , next) =>{
+	const authHeader = req.header['authorization'];
+	const token = authHeader && authHeader.split(' ')[1];
+	console.log(authHeader);
+	if(token==null)
+		return res.status(401).send("Token Requerido");
+	JWT.verify(token,TOKEN_KEY,(err, user) =>{
+		if(err) return res.status(403).send("Token Invalido");
+		console.log(user);
+		req.user = user;
+		next();
+	});
+}
 app.get('/', (req, res) => {
 	res.send('hola desde tu primera ruta de la Api')
 })
@@ -68,6 +84,7 @@ app.post('/api/usuarios', (req, res) => {
 		}
   
 		if (result && result.length > 0) {
+			
 		  const hash = result[0].password;
   
 		  bcrypt.compare(password, hash, (err, passwordMatch) => {
@@ -77,11 +94,18 @@ app.post('/api/usuarios', (req, res) => {
 			}
   
 			if (passwordMatch) {
-			  res.status(200).send({
-				"id": result[0].id,
-				"user": result[0].nombre,
-				"username": result[0].username
-			  });
+				const datos = {
+					"id": result[0].id,
+					"user": result[0].nombre,
+					"username": result[0].username
+				  };
+				const token = JWT.sign(
+					{userId:datos.id,username:datos.username,user:datos.user},
+					TOKEN_KEY,
+					{expiresIn:"2h"}
+				);
+				let ndatos = {...datos,token};
+			  res.status(200).json(ndatos);
 			} else {
 			  res.status(400).send('Contraseña incorrecta');
 			}
@@ -92,5 +116,15 @@ app.post('/api/usuarios', (req, res) => {
 	  });
 	});
   });
+
+app.get('/listar/usuario/:id/ventas', (req, res) => {
+	const datos =[
+		{id:1,cliente:"empresa -A",total:2005,fecha:"2022-01-05"},
+		{id:2,cliente:"empresa -B",total:205,fecha:"2022-01-01"},
+		{id:3,cliente:"empresa -C",total:21005,fecha:"2022-01-30"},
+
+	];
+	res.json(datos);
+});
 
 app.listen(4000, () => console.log('hola soy el servidor'))
