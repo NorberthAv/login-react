@@ -2,10 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import { Container, Row, Col, Nav } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import '@fortawesome/fontawesome-free/css/all.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { fab } from '@fortawesome/free-brands-svg-icons';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import reportWebVitals from './reportWebVitals';
+import { Container, Row, Col, Nav } from "react-bootstrap";
+library.add(fas, fab);
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

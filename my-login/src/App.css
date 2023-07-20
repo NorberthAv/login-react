@@ -11,10 +11,21 @@
   height: 20vmin;
   pointer-events: none;
 }
+.left-logo{
+  float: left;
+  margin-left: 15%;
+}
 .App-logo {
   height: 10vmin;
   pointer-events: none;
 }
+.btn-cierre{
+  /* color: #ffffff; */
+  font-size: 10px;
+  float: right;
+  margin: 7% 10% 3% 0%;
+}
+
 .labels{
   text-align: left !important;
   margin-bottom: 2%;
