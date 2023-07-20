@@ -10,6 +10,7 @@ function LoginForm() {
   const { Session, updateGlobalVariable } = useContext(GlobalContext)
 
   const [error, setError] = useState(false);
+  const [errorrespuesta, setErrorrespuesta] = useState(false);
   // const [email, setEmail] = useState('');
   const [UserName, setUserName] = useState('');
   const [password, setPassword] = useState('');
@@ -39,12 +40,20 @@ function LoginForm() {
       if(response.status == 200){
         // window.localStorage.setItem('datUser', response.data)
         updateGlobalVariable([response]);
-       
+  
       }else{
+
         updateGlobalVariable([]);
-      }
+          setErrorrespuesta(response.data.error)
+          setTimeout(() => {
+            setErrorrespuesta(false);
+          }, 3000);
+
+        }
+      
       // Aquí puedes procesar la respuesta del servidor
     } catch (error) {
+     
       console.error(error);
       // Aquí puedes mostrar un mensaje de error al usuario
     }
@@ -88,7 +97,10 @@ function LoginForm() {
         Iniciar sesión
       </Button>
     </Form>
+    <br/>
     {error && <p>Todos los campos son Obligatorios</p>}
+    {errorrespuesta && <p>{errorrespuesta}</p>}
+
     </>
   );
 }

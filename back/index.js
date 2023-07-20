@@ -1,9 +1,9 @@
-const express = require('express')
-const cors = require('cors')
-const JWT  = required('jsonwebtoken')
-const mysql = require('mysql')
+const express = require('express');
+const cors = require('cors');
+const jwt  = require('jsonwebtoken');
+const mysql = require('mysql');
 const bcrypt = require('bcrypt');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 
 const app = express()
 app.use(cors())
@@ -26,7 +26,7 @@ const verifyToken = (req, res , next) =>{
 	console.log(authHeader);
 	if(token==null)
 		return res.status(401).send("Token Requerido");
-	JWT.verify(token,TOKEN_KEY,(err, user) =>{
+	jwt.verify(token,TOKEN_KEY,(err, user) =>{
 		if(err) return res.status(403).send("Token Invalido");
 		console.log(user);
 		req.user = user;
@@ -99,25 +99,25 @@ app.post('/api/usuarios', (req, res) => {
 					"user": result[0].nombre,
 					"username": result[0].username
 				  };
-				const token = JWT.sign(
+				const token = jwt.sign(
 					{userId:datos.id,username:datos.username,user:datos.user},
 					TOKEN_KEY,
 					{expiresIn:"2h"}
 				);
 				let ndatos = {...datos,token};
-			  res.status(200).json(ndatos);
+				return  res.status(200).json(ndatos);
 			} else {
-			  res.status(400).send('Contraseña incorrecta');
+				return res.status(201).json({ error: 'Contraseña incorrecta' });
 			}
 		  });
 		} else {
-		  res.status(400).send('Usuario no existe');
+			return res.status(202).json({ error: 'Usuario no existe' });
 		}
 	  });
 	});
   });
 
-app.get('/listar/usuario/:id/ventas', (req, res) => {
+app.get('/listar/usuario/:id/ventas',verifyToken, (req, res) => {
 	const datos =[
 		{id:1,cliente:"empresa -A",total:2005,fecha:"2022-01-05"},
 		{id:2,cliente:"empresa -B",total:205,fecha:"2022-01-01"},
