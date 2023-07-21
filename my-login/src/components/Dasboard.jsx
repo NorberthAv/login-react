@@ -1,12 +1,41 @@
 import {Body_espacio} from './Cuerpo';
-import { useState ,useContext  } from 'react';
+import {Crud} from './crud/Crud';
+import {GridEstudiantes} from './crud/GridEst';
+import { useState, useContext,useEffect } from 'react';
+import axios from 'axios';
 import logo from './../logo.svg';
 import { GlobalContext } from './../Context/GlobalContext';
 
 
 const DashboardVertical = () => {
+
+
 const { Session, updateGlobalVariable } = useContext(GlobalContext)
 const name = Session[0].data.user ? Session[0].data.user : 'No esta Conectado'
+
+const [ActualizarBandeja, setActualizarBandeja] = useState(false);
+const [DatosEstudiantes, setDatosEstudiantes] = useState([]);
+
+useEffect(() => {
+    estudianteslist();
+  }, [ActualizarBandeja]);
+  
+
+const estudianteslist = () =>{
+    const response = axios.get('http://localhost:4000/get/estudiantes')
+    .then(response => {
+        console.log(response.data, response.status);
+        if (response.status === 200) {
+          setDatosEstudiantes(response.data);
+        } else {
+          console.log(response, 'Error');
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+}
+
     return (
       <div className="container-fluid">
         <div className="row">
@@ -36,7 +65,10 @@ const name = Session[0].data.user ? Session[0].data.user : 'No esta Conectado'
             <br />
           </div>
           <div className="col-xs-8 col-sm-9">
-            <Body_espacio />
+          <div className='container expansor'>
+            <Crud setActualizarBandeja={setActualizarBandeja}/>
+            <GridEstudiantes DatosEstudiantes={DatosEstudiantes}/>
+          </div>
           </div>
         </div>
       </div>

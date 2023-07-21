@@ -36,6 +36,61 @@ const verifyToken = (req, res , next) =>{
 app.get('/', (req, res) => {
 	res.send('hola desde tu primera ruta de la Api')
 })
+app.get('/get/estudiantes', (req, res) => {
+	
+	pool.getConnection((err, connection) => {
+		if (err) {
+			return res.status(500).send({ error: 'Error al obtener la conexión de la base de datos' });
+		}
+		connection.query("SELECT * FROM estudiantes", (err, result) => {
+			console.log(result);
+		if(result && result.length > 0 ){
+		return res.status(200).json(result);
+		}
+		else{
+		return res.status(202).json('Sin Datos');	
+		}
+		});
+	
+		
+	});
+})
+
+app.post('/registro/estudiantes', (req, res) => {
+	const   cedula 			= req.body.estudiante_registro.CedulaEstudiante;
+	const   nombre 			= req.body.estudiante_registro.NameEstudiante;
+	const   edad 			= req.body.estudiante_registro.EdadEstudiante;
+	const   nivel 			= req.body.estudiante_registro.NivelEstudiante;
+	const   grupo 			= req.body.estudiante_registro.GrupoEstudiante;
+	const   mensualidad 	= req.body.estudiante_registro.MensualidadEstudiante;
+	const   fechaingreso 	= req.body.estudiante_registro.FechaIngresoEstudiante;
+
+	const values = [cedula, nombre, edad, nivel, grupo, mensualidad,fechaingreso];
+
+	pool.getConnection((err, connection) => {
+		if (err) {
+			return res.status(500).send({ error: 'Error al obtener la conexión de la base de datos' });
+		}
+		connection.query("SELECT * FROM estudiantes WHERE cedula = ?", [cedula], (err, result) => {
+		if(result && result.length > 0 ){
+			res.status(202).send({ message: 'Estudiante ya registrado' });
+		}else{
+			connection.query("INSERT INTO estudiantes (cedula, nombre, edad, nivel, grupo, mensualidad, fecha_ingreso) VALUES (?, ?, ?, ?, ?, ?, ?)", values, (err, result) => {
+				connection.release();
+				if (err) {
+					console.log(err, 'error');
+					return res.status(500).send({ error: 'Error al guardar los datos en la base de datos' });
+				}
+				res.status(200).send({ message: 'Estudiante creado exitosamente' });
+			});
+		}
+		});
+	
+		
+	});
+	
+	return  res.status(200);
+})
 app.post('/api/usuarios', (req, res) => {
 	const { nombreCompleto, UserName, fechaNacimiento, genero, email, password } = req.body;
   

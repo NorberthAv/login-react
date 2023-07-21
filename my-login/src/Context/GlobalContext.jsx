@@ -5,6 +5,7 @@ export const GlobalContext = createContext();
 export const GlobalProvider = ({ children }) => {
 
   const [Session, setSession] = useState([]);
+  
   const updateGlobalVariable = (newValues) => {
     setSession([...Session, ...newValues]);
     localStorage.setItem('Session', JSON.stringify([...Session, ...newValues]));

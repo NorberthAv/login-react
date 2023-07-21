@@ -15,6 +15,24 @@
   float: left;
   margin-left: 15%;
 }
+.right{
+  float:right;
+}
+.carta-estudiante{
+  padding: 3%;
+
+}
+.carta-estudiante-body{
+  padding: 3%;
+  border: solid 1px black;
+}
+.justify{
+  margin-bottom: 1%;
+  /* margin-buttom: 0.5%; */
+  align-items: justify;
+  text-align: justify;
+  align-content: justify-all;
+}
 .App-logo {
   height: 10vmin;
   pointer-events: none;
