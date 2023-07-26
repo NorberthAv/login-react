@@ -32,12 +32,13 @@ function AppWithContext() {
   }
 
   return (
-    <div className="App fondo">
+    <div className="App fondo" id="body-pd">
           {validarSeccion()}
     </div>
   );
 }
 function App() {
+  
   return (
     <GlobalProvider>
       <AppWithContext />

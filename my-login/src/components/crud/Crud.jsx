@@ -4,6 +4,7 @@ import { Form, Button } from 'react-bootstrap';
 
 export function Crud({setActualizarBandeja}) {
     const [Error, setError] = useState('');
+    const [Imagen, setImagen] = useState(null);
     const [Estudiante, setEstudiante] = useState('');
     const [Cedula, setCedula] = useState('');
     const [Edad, setEdad] = useState('');
@@ -12,31 +13,37 @@ export function Crud({setActualizarBandeja}) {
     const [Mensualidad, setMensualidad] = useState('0');
     const [FechaIngreso, setFechaIngreso] = useState('');
 
+    function manejarCambio(e) {
+        setImagen(e.target.files[0]);
+      }
     const CreateEstudiante = async (event) =>{
         event.preventDefault();
 
-        if(Estudiante == ''|| Cedula == ''|| Edad == ''|| Nivel == ''|| Grupo == ''|| Mensualidad == ''|| FechaIngreso == ''){
+        if(Estudiante == ''|| Cedula == ''|| Imagen == '' || Edad == ''|| Nivel == ''|| Grupo == ''|| Mensualidad == ''|| FechaIngreso == ''){
             setError('Todos los campos son Obligatorios')
             setTimeout(() => {
                 setError(false);
               }, 3000);  
             return
         }
-        let estudiante_registro = {
-            CedulaEstudiante: Cedula,
-            NameEstudiante: Estudiante,
-            EdadEstudiante: Edad,
-            NivelEstudiante: Nivel,
-            GrupoEstudiante: Grupo,
-            MensualidadEstudiante: Mensualidad,
-            FechaIngresoEstudiante: FechaIngreso,
-        }
-        try{
+        const formData = new FormData();
+        formData.append('CedulaEstudiante', Cedula);
+        formData.append('NameEstudiante', Estudiante);
+        formData.append('EdadEstudiante', Edad);
+        formData.append('NivelEstudiante', Nivel);
+        formData.append('GrupoEstudiante', Grupo);
+        formData.append('MensualidadEstudiante', Mensualidad);
+        formData.append('FechaIngresoEstudiante', FechaIngreso);
+        formData.append('ImagenEstudiante', Imagen);
+        
+           try{
 
-            const response = await axios.post('http://localhost:4000/registro/estudiantes', {
-                estudiante_registro
+            const response = await axios.post('http://localhost:4000/registro/estudiantes',  formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
               });
-              console.log('envia',estudiante_registro,response);
+              console.log('envia',formData,response);
 
               if(response.status == 200){
                 // window.localStorage.setItem('datUser', response.data)
@@ -72,6 +79,21 @@ export function Crud({setActualizarBandeja}) {
                 <div className='card-body'>
    
                     <div className='row'>
+                        <div className='col-xs-12 col-sm-12 col-md-4 center' >
+                            <div className='contenedor-img'>
+                                <img className='img' src={Imagen ? URL.createObjectURL(Imagen) : ""}/>
+                            </div>
+                        </div>
+                        <div className='col-xs-12 col-sm-12 col-md-8 justify'>
+                            <Form.Label ><strong>Foto: </strong></Form.Label> 
+                            <Form.Control
+                            type="file"
+                            className='form-control' 
+                            accept="image/*"
+                            placeholder="Foto de Perfil"
+                            onChange={manejarCambio}
+                            />
+                        </div>
                         <div className='col-12 justify'>
                             <Form.Label ><strong>Estudiante: </strong></Form.Label> 
                             <Form.Control

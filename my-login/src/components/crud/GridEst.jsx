@@ -17,16 +17,22 @@ return <>
         <div className='lista row'>
         {
         DatosEstudiantes.map((val,key) => {
-            return <div key={key} className='col-3 carta-estudiante'>
+            return <div key={key} className='col-xs-12 col-sm-12 col-md-4 carta-estudiante'>
                 <div className='carta-estudiante-body'>
-                    <p>Id: {val.id}</p>
-                    <p>Cédula: {val.cedula}</p>
-                    <p>Nombre: {val.nombre}</p>
-                    <p>Edad: {val.edad}</p>
-                    <p>Nivel: {val.nivel}</p>
-                    <p>Grupo: {val.grupo}</p>
-                    <p>Mensualidad: {val.mensualidad}</p>
-                    <p>Fecha de ingreso: {val.fecha_ingreso}</p>
+                <div className='foto_perfil'>
+                <img src={`data:image/jpg;base64,${val.foto }`} className='img-perfiles' alt="foto de perfil" />
+                </div>
+                <div className='carta-estudiante-datos'>
+                    {/* <p>Id: {val.id}</p> */}
+                    <p><strong>Cédula:</strong> {val.cedula}</p>
+                    <p><strong>Nombre:</strong> {val.nombre}</p>
+                    <p><strong>Edad:</strong> {val.edad}</p>
+                    <p><strong>Nivel:</strong> {val.nivel}</p>
+                    <p><strong>Grupo:</strong> {val.grupo}</p>
+                    <p><strong>Mensualidad:</strong> {val.mensualidad}</p>
+                    <p><strong>Fecha de ingreso:</strong> {val.fecha_ingreso}</p>
+                    <br />
+                </div>
                 </div>
             </div>
 

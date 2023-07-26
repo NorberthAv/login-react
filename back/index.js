@@ -4,8 +4,12 @@ const jwt  = require('jsonwebtoken');
 const mysql = require('mysql');
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
+const fs = require('fs');
+const multer = require('multer');
 
 const app = express()
+const upload = multer({ dest: 'uploads/' });
+
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json({ limit: '10mb' }))
@@ -56,36 +60,54 @@ app.get('/get/estudiantes', (req, res) => {
 	});
 })
 
-app.post('/registro/estudiantes', (req, res) => {
-	const   cedula 			= req.body.estudiante_registro.CedulaEstudiante;
-	const   nombre 			= req.body.estudiante_registro.NameEstudiante;
-	const   edad 			= req.body.estudiante_registro.EdadEstudiante;
-	const   nivel 			= req.body.estudiante_registro.NivelEstudiante;
-	const   grupo 			= req.body.estudiante_registro.GrupoEstudiante;
-	const   mensualidad 	= req.body.estudiante_registro.MensualidadEstudiante;
-	const   fechaingreso 	= req.body.estudiante_registro.FechaIngresoEstudiante;
+app.post('/registro/estudiantes',  upload.single('ImagenEstudiante'), (req, res) => {
 
-	const values = [cedula, nombre, edad, nivel, grupo, mensualidad,fechaingreso];
-
-	pool.getConnection((err, connection) => {
-		if (err) {
-			return res.status(500).send({ error: 'Error al obtener la conexión de la base de datos' });
-		}
-		connection.query("SELECT * FROM estudiantes WHERE cedula = ?", [cedula], (err, result) => {
-		if(result && result.length > 0 ){
-			res.status(202).send({ message: 'Estudiante ya registrado' });
-		}else{
-			connection.query("INSERT INTO estudiantes (cedula, nombre, edad, nivel, grupo, mensualidad, fecha_ingreso) VALUES (?, ?, ?, ?, ?, ?, ?)", values, (err, result) => {
-				connection.release();
-				if (err) {
-					console.log(err, 'error');
-					return res.status(500).send({ error: 'Error al guardar los datos en la base de datos' });
-				}
-				res.status(200).send({ message: 'Estudiante creado exitosamente' });
-			});
-		}
-		});
+	const cedula = req.body.CedulaEstudiante;
+    const nombre = req.body.NameEstudiante;
+    const edad = req.body.EdadEstudiante;
+    const nivel = req.body.NivelEstudiante;
+    const grupo = req.body.GrupoEstudiante;
+    const mensualidad = req.body.MensualidadEstudiante;
+    const fechaingreso = req.body.FechaIngresoEstudiante;
+    const imagenpath = req.file.path;
 	
+	// Crea un stream de lectura del archivo de imagen
+	const stream = fs.createReadStream(imagenpath);
+
+	// Crea un Buffer vacío para almacenar los datos del stream
+	let data = Buffer.from([]);
+
+	// Escucha el evento 'data' del stream y agrega los datos al Buffer
+	stream.on('data', function(chunk) {
+		data = Buffer.concat([data, chunk]);
+	});
+
+	// Escucha el evento 'end' del stream y convierte el Buffer a Base64
+	stream.on('end', function() {
+		const imagenbase64 = data.toString('base64');
+		// Aquí puedes hacer lo que necesites con la imagen en formato Base64
+		const values = [cedula, nombre, edad, nivel, grupo, mensualidad,fechaingreso,imagenbase64];
+	
+		pool.getConnection((err, connection) => {
+			if (err) {
+				return res.status(500).send({ error: 'Error al obtener la conexión de la base de datos' });
+			}
+			connection.query("SELECT * FROM estudiantes WHERE cedula = ?", [cedula], (err, result) => {
+				if(result && result.length > 0 ){
+					res.status(202).send({ message: 'Estudiante ya registrado' });
+				}else{
+					connection.query("INSERT INTO estudiantes (cedula, nombre, edad, nivel, grupo, mensualidad, fecha_ingreso, foto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", values, (err, result) => {
+						connection.release();
+						if (err) {
+							console.log(err, 'error');
+							return res.status(500).send({ error: 'Error al guardar los datos en la base de datos' });
+						}
+						res.status(200).send({ message: 'Estudiante creado exitosamente' });
+					});
+				}
+			});
+			
+		});
 		
 	});
 	
