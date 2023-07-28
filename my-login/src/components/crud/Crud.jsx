@@ -1,8 +1,10 @@
 import { useState, useContext } from 'react';
 import axios from 'axios';
 import { Form, Button } from 'react-bootstrap';
+import { VariablesProvider, VariablesContext } from './../../Context/VariablesGlobales';
 
-export function Crud({setActualizarBandeja}) {
+export function Crud() {  
+    const {ActualizarBandeja, setActualizarBandeja } = useContext(VariablesContext)
     const [Error, setError] = useState('');
     const [Imagen, setImagen] = useState(null);
     const [Estudiante, setEstudiante] = useState('');
@@ -64,8 +66,9 @@ export function Crud({setActualizarBandeja}) {
 
         }
         setActualizarBandeja(true);
-           
-        
+        // setTimeout(() => {
+        //   setActualizarBandeja(false);
+        // }, 3000);
     }
 
     return <>

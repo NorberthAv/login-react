@@ -11,14 +11,17 @@ import { fab } from '@fortawesome/free-brands-svg-icons';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import reportWebVitals from './reportWebVitals';
 import { Container, Row, Col, Nav } from "react-bootstrap";
+
+
 library.add(fas, fab);
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   // <React.StrictMode>
-     <App />
-   
+
+    <App />
+ 
   // </React.StrictMode>
 );
 

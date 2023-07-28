@@ -1,9 +1,14 @@
 import { createContext, useState , useEffect  } from 'react';
+import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import {Detallados} from '../components/detallado/Detalle'
+import App from '../App';
+
 
 export const GlobalContext = createContext();
 
 export const GlobalProvider = ({ children }) => {
 
+  
   const [Session, setSession] = useState([]);
   
   const updateGlobalVariable = (newValues) => {

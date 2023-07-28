@@ -1,12 +1,13 @@
 import { useState, useContext,useEffect } from 'react';
 import axios from 'axios';
 import { Form, Button } from 'react-bootstrap';
-
-
-export function GridEstudiantes ({DatosEstudiantes}){
+import {VariablesContext } from './../../Context/VariablesGlobales';
 
 
 
+export function GridEstudiantes (){
+
+const {DatosEstudiantes, updateDatosEstudiantes } = useContext(VariablesContext)
 
 return <>
 <br />
@@ -32,6 +33,11 @@ return <>
                     <p><strong>Mensualidad:</strong> {val.mensualidad}</p>
                     <p><strong>Fecha de ingreso:</strong> {val.fecha_ingreso}</p>
                     <br />
+                    <button type="button"  className='btn btn-sm btn-primary'>
+                    Ver Detalles
+                    {/* <Link to="/detallados">Ver Detalles</Link> */}
+                    </button>
+                   
                 </div>
                 </div>
             </div>

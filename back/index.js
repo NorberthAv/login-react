@@ -27,12 +27,12 @@ const TOKEN_KEY ="y6P4xzc9wfyMzlEe2oaPcmqxFfTe691mGx4oanFQ6RU=";
 const verifyToken = (req, res , next) =>{
 	const authHeader = req.header['authorization'];
 	const token = authHeader && authHeader.split(' ')[1];
-	console.log(authHeader);
+
 	if(token==null)
 		return res.status(401).send("Token Requerido");
 	jwt.verify(token,TOKEN_KEY,(err, user) =>{
 		if(err) return res.status(403).send("Token Invalido");
-		console.log(user);
+
 		req.user = user;
 		next();
 	});
@@ -47,7 +47,6 @@ app.get('/get/estudiantes', (req, res) => {
 			return res.status(500).send({ error: 'Error al obtener la conexión de la base de datos' });
 		}
 		connection.query("SELECT * FROM estudiantes", (err, result) => {
-			console.log(result);
 		if(result && result.length > 0 ){
 		return res.status(200).json(result);
 		}
@@ -71,47 +70,36 @@ app.post('/registro/estudiantes',  upload.single('ImagenEstudiante'), (req, res)
     const fechaingreso = req.body.FechaIngresoEstudiante;
     const imagenpath = req.file.path;
 	
-	// Crea un stream de lectura del archivo de imagen
-	const stream = fs.createReadStream(imagenpath);
+// Lee el archivo como un Buffer
+	const buffer = fs.readFileSync(imagenpath);
+// Convierte el Buffer a Base64
+	const imagenbase64 = buffer.toString('base64');
 
-	// Crea un Buffer vacío para almacenar los datos del stream
-	let data = Buffer.from([]);
+	const values = [cedula, nombre, edad, nivel, grupo, mensualidad,fechaingreso,imagenbase64];
 
-	// Escucha el evento 'data' del stream y agrega los datos al Buffer
-	stream.on('data', function(chunk) {
-		data = Buffer.concat([data, chunk]);
-	});
-
-	// Escucha el evento 'end' del stream y convierte el Buffer a Base64
-	stream.on('end', function() {
-		const imagenbase64 = data.toString('base64');
-		// Aquí puedes hacer lo que necesites con la imagen en formato Base64
-		const values = [cedula, nombre, edad, nivel, grupo, mensualidad,fechaingreso,imagenbase64];
-	
-		pool.getConnection((err, connection) => {
-			if (err) {
-				return res.status(500).send({ error: 'Error al obtener la conexión de la base de datos' });
-			}
-			connection.query("SELECT * FROM estudiantes WHERE cedula = ?", [cedula], (err, result) => {
-				if(result && result.length > 0 ){
-					res.status(202).send({ message: 'Estudiante ya registrado' });
-				}else{
-					connection.query("INSERT INTO estudiantes (cedula, nombre, edad, nivel, grupo, mensualidad, fecha_ingreso, foto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", values, (err, result) => {
-						connection.release();
-						if (err) {
-							console.log(err, 'error');
-							return res.status(500).send({ error: 'Error al guardar los datos en la base de datos' });
-						}
-						res.status(200).send({ message: 'Estudiante creado exitosamente' });
-					});
+	pool.getConnection((err, connection) => {
+		if (err) {
+			return res.status(500).send({ error: 'Error al obtener la conexión de la base de datos' });
+		}
+		connection.query("SELECT * FROM estudiantes WHERE cedula = ?", [cedula], (err, result) => {
+		if(result && result.length > 0 ){
+			return res.status(202).send({ message: 'Estudiante ya registrado' });
+		}else{
+			connection.query("INSERT INTO estudiantes (cedula, nombre, edad, nivel, grupo, mensualidad, fecha_ingreso, foto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", values, (err, result) => {
+			connection.release();
+				if (err) {
+					console.log(err, 'error');
+				return res.status(500).send({ error: 'Error al guardar los datos en la base de datos' });
 				}
+				return res.status(200).send({ message: 'Estudiante creado exitosamente' });
 			});
-			
+		}
 		});
+	
 		
 	});
 	
-	return  res.status(200);
+	
 })
 app.post('/api/usuarios', (req, res) => {
 	const { nombreCompleto, UserName, fechaNacimiento, genero, email, password } = req.body;
@@ -126,7 +114,7 @@ app.post('/api/usuarios', (req, res) => {
 	  } else {
 		// El hash de la contraseña se genera con éxito
 		const values = [nombreCompleto, UserName, fechaNacimiento, genero, email, hash];
-		console.log(values);
+		
   
 		pool.getConnection((err, connection) => {
 		  if (err) {

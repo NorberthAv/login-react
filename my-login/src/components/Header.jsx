@@ -8,6 +8,8 @@ function ValidarSeccionheader(){
     const handleLogout = () => {
         
         updateGlobalVariable([]);
+        localStorage.clear();
+        localStorage.removeItem('DatosEstudiantes');
         localStorage.removeItem('Session');
         window.location.reload();
         
