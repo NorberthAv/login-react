@@ -13,7 +13,7 @@ export const RutaProvider = () => {
       <BrowserRouter>
         <Routes>
         <Route path="/" element={<AppWithContext />}/>
-        <Route path="/detalle" element={<Detallados/>}/>
+        <Route path="/Detallados/:id" element={<Detallados/>}/>
         <Route path="/registrar-estudiante" element={<AppWithContext/>}/>
         
       </Routes>

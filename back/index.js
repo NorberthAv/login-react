@@ -100,7 +100,44 @@ app.post('/registro/estudiantes',  upload.single('ImagenEstudiante'), (req, res)
 	});
 	
 	
-})
+});
+app.post('/detalle/estudiantes', (req, res) => {
+
+	const id = req.body.IdEstudiante;
+
+	pool.getConnection((err, connection) => { 
+		if (err) {
+			return res.status(500).send({ error: 'Error al obtener la conexión de la base de datos' });
+		}
+		connection.query("SELECT * FROM estudiantes WHERE id = ?", [id], (err, result) => {
+		if(result && result.length > 0 ){
+
+			const datos = {
+				"id": result[0].id,
+				"fotoEstudiante": result[0].foto,
+				"cedulaEstudiante": result[0].cedula,
+				"nombreEstudiante": result[0].nombre,
+				"edadEstudiante": result[0].edad,
+				"nivelEstudiante": result[0].nivel,
+				"grupoEstudiante": result[0].grupo,
+				"mensualidadEstudiante": result[0].mensualidad,
+				"estado_solvencia": result[0].estatus_solvencia_id,
+				"fechaIngresoEstudiante": result[0].fecha_ingreso
+			  };
+
+			return  res.status(200).json(datos);
+
+		}else{
+			return res.status(202).send({ message: 'Estudiante no encontrado'});
+		}
+
+		});
+	
+		
+	});
+	
+	
+});
 app.post('/api/usuarios', (req, res) => {
 	const { nombreCompleto, UserName, fechaNacimiento, genero, email, password } = req.body;
   

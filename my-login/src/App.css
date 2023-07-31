@@ -24,6 +24,9 @@
 .right{
   float:right;
 }
+.left{
+  float: left;
+}
 .carta-estudiante{
   padding: 3%;
 
@@ -48,6 +51,11 @@
 .foto_perfil{
   border-radius: 15px 15px 0px 0px;
   height: 40%;
+  width: 100%;
+}
+.foto_perfil_detalle{
+  border-radius: 15px;
+  height: 100%;
   width: 100%;
 }
 .img-perfiles{
@@ -235,6 +243,7 @@ main {
 .icon,
 .link_text {
   align-items: center;
+  text-decoration: none;
   justify-content: center;
   padding: 5%;
   font-size: 20px;
@@ -396,3 +405,7 @@ a{
     padding-left: calc(var(--nav-width) + 188px);
     }
 } */
+/* ---------------------------------------------Vista Detalles--------------------- */
+.container-detalles{
+  padding: 10%;
+}

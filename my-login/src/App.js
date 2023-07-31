@@ -12,6 +12,7 @@ import {Sidebar} from './components/Sidebar';
 import {Crud} from './components/crud/Crud';
 import { GridEstudiantes } from './components/crud/GridEst';
 import { MenuBoot } from './components/menu/MenuBootstrap';
+import { Detallados } from './components/detallado/Detalle';
 
 export function AppWithContext() {
   const location = useLocation();
@@ -26,6 +27,9 @@ switch (location.pathname) {
     break;
   case '/detalles':
     return <GridEstudiantes/>
+    break;
+  case '/detalles/:id':
+      return <Detallados/>
     break;
   case '/registrar-estudiante':
     return <Crud/>

@@ -1,6 +1,7 @@
 import { useState, useContext } from 'react';
 import axios from 'axios';
 import { Form, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { VariablesProvider, VariablesContext } from './../../Context/VariablesGlobales';
 
 export function Crud() {  
@@ -175,12 +176,18 @@ export function Crud() {
                     </div>
                     <br />
                     <div className='d-flex right'>
-                    <Button variant="outline-success" type="button" onClick={CreateEstudiante} style={{ margin: '0.5%' }}  id="guardar">
-                        Guardar
-                    </Button>
-                    <Button variant="outline-danger" type="button" style={{ margin: '0.5%' }}  id="limpiar">
+                    <Link to={`/`}>
+                    <button  type="button" className='btn btn-primary btn-sm' style={{ margin: '0.5%' }}>
+                        Volver
+                    </button>
+                    </Link>
+                    <button  type="button" className='btn btn-danger btn-sm' style={{ margin: '0.5%' }}  id="limpiar">
                     Limpiar
-                    </Button>
+                    </button>
+                    <button  type="button" className='btn btn-success btn-sm' onClick={CreateEstudiante} style={{ margin: '0.5%' }}  id="guardar">
+                        Guardar
+                    </button>
+                 
                         <br />
                    </div>
                 </div>

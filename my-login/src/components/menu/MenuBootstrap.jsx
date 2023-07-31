@@ -56,20 +56,20 @@ const Estudianteslist = () =>{
 }
     const ElementMenu = [
 
+      // {
+      //     path:"/detalles",
+      //     name:"detalles",
+      //     icon:"fa-users"
+      // },
         {
             path:"/",
-            name:"Home",
-            icon:"fa-users"
-        },
-        {
-            path:"/detalles",
-            name:"detalles",
-            icon:"fa-users"
+            name:"Estudiantes",
+            icon:"fa-user"
         },
         {
             path:"/registrar-estudiante",
             name:"Registrar Estudiantes",
-            icon:"fa-users"
+            icon:"fa-plus"
         }
     
         ]
@@ -84,7 +84,7 @@ const Estudianteslist = () =>{
     </button>
     <div className="offcanvas offcanvas-end text-bg-dark" tabIndex={-1} id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
       <div className="offcanvas-header">
-        <h5 className="offcanvas-title" id="offcanvasDarkNavbarLabel">Dark offcanvas</h5>
+        <h5 className="offcanvas-title" id="offcanvasDarkNavbarLabel">Label del menu lateral</h5>
         <button type="button" className="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
       <div className="offcanvas-body">
