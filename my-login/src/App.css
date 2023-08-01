@@ -70,12 +70,12 @@
   border-radius: 50%;
 }
 .carta-estudiante-body{
-  height: 94%;
+  height: 90%;
   border-radius: 14px;
   border: solid 1px black;
 }
 .carta-estudiante-datos{
-  padding: 3%;
+  padding: 5%;
 }
 .justify{
   margin-bottom: 1%;

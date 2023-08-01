@@ -4,6 +4,7 @@ import moment from 'moment';
 import { Form, Button } from 'react-bootstrap';
 import { VariablesContext } from './../../Context/VariablesGlobales';
 import { Link } from 'react-router-dom';
+import QRCode from "react-qr-code";
 
 
 
@@ -42,6 +43,8 @@ export function GridEstudiantes() {
                                         <p><strong>Mensualidad:</strong> {val.mensualidad}</p>
                                         <p><strong>Fecha de ingreso:</strong> {moment(val.fechaIngresoEstudiante).format('DD/MM/YYYY') }</p>
                                         <br />
+                                        
+                                        <QRCode value={`http://127.0.0.1:3000/detallados/${val.id}`} size={100} bgColor="#282c34" fgColor="#fff" level="H" />
 
 
                                         <Link to={`/detallados/${val.id}`}>
