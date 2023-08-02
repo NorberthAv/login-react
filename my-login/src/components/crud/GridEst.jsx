@@ -5,12 +5,21 @@ import { Form, Button } from 'react-bootstrap';
 import { VariablesContext } from './../../Context/VariablesGlobales';
 import { Link } from 'react-router-dom';
 import QRCode from "react-qr-code";
+import { VerPDF } from '../pdf/CarnetPDF';
+import { PDFViewer } from '@react-pdf/renderer';
 
 
 
 export function GridEstudiantes() {
 
     const { DatosEstudiantes, updateDatosEstudiantes } = useContext(VariablesContext)
+    const [verPDFs, setverPDFs ]  = useState (false);
+    const [idselected, setidselected] =useState(null);
+
+    const handlepdf = (id) => {
+        setverPDFs(true);
+        setidselected(id)
+    }
 
     return <>
         <br />
@@ -44,8 +53,9 @@ export function GridEstudiantes() {
                                         <p><strong>Fecha de ingreso:</strong> {moment(val.fechaIngresoEstudiante).format('DD/MM/YYYY') }</p>
                                         <br />
                                         
-                                        <QRCode value={`http://127.0.0.1:3000/detallados/${val.id}`} size={100} bgColor="#282c34" fgColor="#fff" level="H" />
-
+                                        <button type="button" className='btn btn-sm btn-primary' onClick={() => handlepdf(val.id)}>
+                                                Ver PDF
+                                        </button>
 
                                         <Link to={`/detallados/${val.id}`}>
                                             <button type="button" className='btn btn-sm btn-primary'>
@@ -61,5 +71,11 @@ export function GridEstudiantes() {
 
             </div>
         </div>
+        {verPDFs ? (
+        <PDFViewer style={{ width:"100%",height:"90vh" }}>
+        <VerPDF  IdEstudianteProp={idselected}/>
+        </PDFViewer>
+        ) : null
+        }
     </>
 }
