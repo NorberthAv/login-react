@@ -1,0 +1,6 @@
+.modal{
+    padding: 2%;
+}
+.modal-open{
+    display: block;
+}

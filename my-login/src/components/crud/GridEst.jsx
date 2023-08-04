@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom';
 import QRCode from "react-qr-code";
 import { VerPDF } from '../pdf/CarnetPDF';
 import { PDFViewer } from '@react-pdf/renderer';
+import Modals from '../modals/Modals';
+import {ModalLara} from '../modals/ModalLara';
 
 
 
@@ -19,6 +21,8 @@ export function GridEstudiantes() {
     const handlepdf = (id) => {
         setverPDFs(true);
         setidselected(id)
+        // document.getElementById('modal_vistapdf').classList.add('modal-open');
+        document.getElementById('modal_vistapdf').style.display = 'block';
     }
 
     return <>
@@ -71,11 +75,13 @@ export function GridEstudiantes() {
 
             </div>
         </div>
+        <ModalLara>
         {verPDFs ? (
         <PDFViewer style={{ width:"100%",height:"90vh" }}>
         <VerPDF  IdEstudianteProp={idselected}/>
         </PDFViewer>
         ) : null
         }
+        </ModalLara>
     </>
 }
