@@ -4,22 +4,6 @@ import moment from 'moment';
 import QRCode from "react-qr-code";
 import { Page, Image, Text, View, Document, StyleSheet, Svg, Path } from '@react-pdf/renderer';
 
-// const QRCodeSVG = ({ url }) => {
-//     const qrSize = 100; // Tamaño del código QR
-
-//     // Función para generar la URL del código QR
-//     const generateQRCode = (url) => {
-//       // Genera el SVG del código QR aquí (puedes usar una biblioteca como qr-svg para esto)
-//       // Retorna el SVG como string
-//       // Ejemplo: return '<svg>...</svg>';
-//     };
-
-//     const qrCodeSvg = generateQRCode(url);
-
-//     return (
-//       <Svg height={qrSize} width={qrSize} dangerouslySetInnerHTML={{ __html: qrCodeSvg }} />
-//     );
-//   };
 // Create styles
 const styles = StyleSheet.create({
     page: {
@@ -61,38 +45,35 @@ const styles = StyleSheet.create({
 //   </Document>
 // );
 export function VerPDF(IdEstudianteProp) {
-
     const [DataEstudiantepdf, setDataEstudiantepdf] = useState([]);
     useEffect(() => {
         EstudianteDetalle();
     }, []);
 
-    console.log(IdEstudianteProp.IdEstudianteProp
-    );
+    console.log(IdEstudianteProp.IdEstudianteProp);
+
+    const QRCodeToImage = (url) => {
+        console.log(typeof url);
+        return <QRCode value={url} size={100} bgColor="#282c34" fgColor="#fff" level="H" />;
+    };
+
     const EstudianteDetalle = async () => {
-
         let IdEstudiante = IdEstudianteProp.IdEstudianteProp;
-
         try {
             const response = await axios.post('http://localhost:4000/detalle/estudiantes', {
                 // email: email,
                 IdEstudiante: IdEstudiante,
-
             });
 
             console.log(response.data, 'aqui');
             if (response.status == 200) {
                 setDataEstudiantepdf([response.data])
             } else if (response.status == 202) {
-
                 alert('error');
             }
             console.log(DataEstudiantepdf);
-
         } catch (error) {
-
             console.error(error);
-
         }
     }
 
@@ -140,11 +121,11 @@ export function VerPDF(IdEstudianteProp) {
                                         </View>
                                     </View>
                                     <View style={styles.col1center}>
-                                        <QRCode
+                                        {/* <QRCode
                                             level="Q"
                                             style={{ width: 256, marginBottom: 50 }}
                                             value={'hello world'}
-                                        />
+                                        /> */}
                                         {/* <Image
                                     src={<QRCode
                                         level="Q"
@@ -152,8 +133,9 @@ export function VerPDF(IdEstudianteProp) {
                                         value={'hello world'}
                                     />}
                                     /> */}
-                                        {/* <Image src={`data:image/svg+xml;utf8,${encodeURIComponent(<QRCode value={`http://127.0.0.1:3000/detallados/${val.id}`} />)}`} /> */}
+                                        {/* <Image src={generateQRCodeImage(`http://127.0.0.1:3000/detallados/${val.id}`)} /> */}
                                         {/* <QRCode value={`http://127.0.0.1:3000/detallados/${val.id}`} size={100} bgColor="#282c34" fgColor="#fff" level="H" /> */}
+                                        { QRCodeToImage(`http://127.0.0.1:3000/detallados/${val.id}`) }
                                     </View>
                                 </View>
                             </View>

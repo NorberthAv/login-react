@@ -429,5 +429,8 @@ a{
 
 /* modal */
 .modal-90w{
-  width: 90vw !important;
+  max-width: 80vw !important;
+}
+.modal-90w > .modal-content {
+  height: 60vw !important;
 }

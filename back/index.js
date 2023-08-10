@@ -122,7 +122,7 @@ app.post('/detalle/estudiantes', (req, res) => {
 				"grupoEstudiante": result[0].grupo,
 				"mensualidadEstudiante": result[0].mensualidad,
 				"estado_solvencia": result[0].estatus_solvencia_id,
-				"fechaIngresoEstudiante": result[0].fecha_ingreso
+				"fechaIngresoEstudiante": result[0].fecha_ingreso,
 			  };
 
 			return  res.status(200).json(datos);
