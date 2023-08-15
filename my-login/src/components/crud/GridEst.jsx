@@ -50,7 +50,7 @@ export function GridEstudiantes() {
                     icon: 'success',
                     confirmButtonText: 'Aceptar'
                   });
-                  setActualizarBandeja(true) ;
+                    setActualizarBandeja(true) ;
                   setTimeout(() => {
                     setActualizarBandeja(false);
                   }, 3000); 
@@ -81,7 +81,11 @@ export function GridEstudiantes() {
             </div>
             <div className='card-body'>
             <div className='pagination'>
+            <button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>
+                 &lt; Anterior
+               </button>
             {
+               
             Array.from({ length: Math.ceil(DatosEstudiantes.length / studentsPerPage) })
             .map((_, index) => (
                 <button
@@ -92,6 +96,9 @@ export function GridEstudiantes() {
                 {index + 1}
                 </button>
             ))}
+             <button onClick={() => paginate(currentPage + 1)} disabled={currentPage === Math.ceil(DatosEstudiantes.length / studentsPerPage)}>
+                Siguiente &gt;
+            </button>
             </div>
                 <div className='lista row'>
                     {
