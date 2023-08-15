@@ -19,6 +19,16 @@ export function GridEstudiantes() {
     const [verPDFs, setverPDFs] = useState(false);
     const [idselected, setidselected] = useState(null);
     const [show, setShow] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const studentsPerPage = 3; // Cantidad de estudiante por pagina
+
+    const indexOfLastStudent = currentPage * studentsPerPage;
+    const indexOfFirstStudent = indexOfLastStudent - studentsPerPage;
+    const currentStudents = DatosEstudiantes.slice(indexOfFirstStudent, indexOfLastStudent);
+  
+    const paginate = (pageNumber) => {
+        setCurrentPage(pageNumber);
+      };
 
     const cambiarestado = async (estado,idEstudiante)=>
   {
@@ -70,9 +80,22 @@ export function GridEstudiantes() {
                 <h4><strong>Estudiantes Registrados</strong></h4>
             </div>
             <div className='card-body'>
+            <div className='pagination'>
+            {
+            Array.from({ length: Math.ceil(DatosEstudiantes.length / studentsPerPage) })
+            .map((_, index) => (
+                <button
+                key={index}
+                className={currentPage === index + 1 ? 'active' : ''}
+                onClick={() => paginate(index + 1)}
+                >
+                {index + 1}
+                </button>
+            ))}
+            </div>
                 <div className='lista row'>
                     {
-                        DatosEstudiantes.map((val, key) => {
+                        currentStudents.map((val, key) => {
                             return <div key={key} className='col-xs-12 col-sm-12 col-md-6 col-lg-4 carta-estudiante'>
                                 <div className='carta-estudiante-body'>
                                     <div className='activa-desactiva'>
