@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 function RegistroForm() {
   const [error, setError] = useState(false);
@@ -32,6 +33,23 @@ function RegistroForm() {
         email: email,
         password: password,
       });
+      if(response.status == 200){
+
+        Swal.fire({
+          title: '¡Usuario!',
+          text: 'Usuario creado exitosamente',
+          icon: 'success',
+          confirmButtonText: 'Aceptar'
+        });
+        setError(false);
+        setNombreCompleto('');
+        setUserName('');
+        setFechaNacimiento('');
+        setGenero('');
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
+      }
       console.log(response);
      
       // Aquí puedes procesar la respuesta del servidor
