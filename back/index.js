@@ -123,6 +123,7 @@ app.post('/detalle/estudiantes', (req, res) => {
 				"mensualidadEstudiante": result[0].mensualidad,
 				"estado_solvencia": result[0].estatus_solvencia_id,
 				"fechaIngresoEstudiante": result[0].fecha_ingreso,
+				"estatusEstudiante": result[0].activo,
 			  };
 
 			return  res.status(200).json(datos);
@@ -218,6 +219,35 @@ app.post('/api/usuarios', (req, res) => {
 	  });
 	});
   });
+
+  app.post('/change/activo', (req, res) => {
+	const nuevo_estado = req.body.nuevo_estado;
+	const IdEstudiante = req.body.idEstudiante;
+	let message_new = ''
+	if(nuevo_estado == 1){
+		message_new = 'Estudiante Activado';
+	}else{
+		message_new = 'Estudiante Desactivado';
+
+	}
+  
+	pool.getConnection((err, connection) => {
+	  if (err) {
+		return res.status(500).send({ error: 'Error al obtener la conexión de la base de datos' });
+	  }  
+	  connection.query("UPDATE estudiantes SET activo = ? WHERE id = ? ", [nuevo_estado,IdEstudiante], (err, result) => {
+		connection.release();
+		if (err) {
+		  return res.status(500).send({ error: 'Error al realizar la consulta a la base de datos' });
+		}else{
+		  return res.status(200).send({ message: message_new });
+		  }
+  
+	
+	  });
+	});
+  });
+
 
 app.get('/listar/usuario/:id/ventas',verifyToken, (req, res) => {
 	const datos =[

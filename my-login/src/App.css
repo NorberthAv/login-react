@@ -434,3 +434,14 @@ a{
 .modal-90w > .modal-content {
   height: 60vw !important;
 }
+/* ------------------------------------------------Boton Activar DesAc-------------------- */
+.boton-activacion{
+position: absolute;
+margin-top: 2%;
+
+}
+.activa-desactiva{
+  text-align: right;
+  padding-right: 25%;
+
+}

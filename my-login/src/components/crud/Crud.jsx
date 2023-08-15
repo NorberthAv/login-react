@@ -1,4 +1,5 @@
-import { useState, useContext } from 'react';
+import React,{ useState, useContext, useRef } from 'react';
+import Swal from 'sweetalert2';
 import axios from 'axios';
 import { Form, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -15,10 +16,28 @@ export function Crud() {
     const [Grupo, setGrupo] = useState('');
     const [Mensualidad, setMensualidad] = useState('0');
     const [FechaIngreso, setFechaIngreso] = useState('');
+    const fileInputRef = useRef(null);
 
     function manejarCambio(e) {
         setImagen(e.target.files[0]);
       }
+    const limpiarCampos = () => {
+        setImagen(null);
+        setEstudiante('');
+        setCedula('');
+        setEdad('');
+        setNivel('');
+        setGrupo('');
+        setMensualidad('0');
+        setFechaIngreso('');
+        setError('');
+        // ---------------Campo Archivo----------------
+        if (fileInputRef.current) {
+            fileInputRef.current.value = '';
+          }
+
+      };
+ 
     const CreateEstudiante = async (event) =>{
         event.preventDefault();
 
@@ -49,10 +68,21 @@ export function Crud() {
               console.log('envia',formData,response);
 
               if(response.status == 200){
-                // window.localStorage.setItem('datUser', response.data)
+                Swal.fire({
+                    title: '¡Estudiantes!',
+                    text: 'Estudiante registrado con éxito.',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                  });
           
               }else if(response.status == 202){
                 
+                Swal.fire({
+                    title: '¡Estudiantes!',
+                    text: response.data.message,
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                  });
                 setError(response.data.message)
                 setTimeout(() => {
                     setError(false);
@@ -67,9 +97,6 @@ export function Crud() {
 
         }
         setActualizarBandeja(true);
-        // setTimeout(() => {
-        //   setActualizarBandeja(false);
-        // }, 3000);
     }
 
     return <>
@@ -95,6 +122,7 @@ export function Crud() {
                             className='form-control' 
                             accept="image/*"
                             placeholder="Foto de Perfil"
+                            ref={fileInputRef}
                             onChange={manejarCambio}
                             />
                         </div>
@@ -181,7 +209,7 @@ export function Crud() {
                         Volver
                     </button>
                     </Link>
-                    <button  type="button" className='btn btn-danger btn-sm' style={{ margin: '0.5%' }}  id="limpiar">
+                    <button  type="button" className='btn btn-danger btn-sm' style={{ margin: '0.5%' }} onClick={limpiarCampos} id="limpiar">
                     Limpiar
                     </button>
                     <button  type="button" className='btn btn-success btn-sm' onClick={CreateEstudiante} style={{ margin: '0.5%' }}  id="guardar">

@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import moment from 'moment';
-
+import Swal from 'sweetalert2';
 import { Form, Button, Modal } from 'react-bootstrap';
 import { VariablesContext } from './../../Context/VariablesGlobales';
 import { Link } from 'react-router-dom';
@@ -14,12 +14,43 @@ import { PDFViewer } from '@react-pdf/renderer';
 
 
 export function GridEstudiantes() {
-
+    const {ActualizarBandeja, setActualizarBandeja } = useContext(VariablesContext)
     const { DatosEstudiantes, updateDatosEstudiantes } = useContext(VariablesContext)
     const [verPDFs, setverPDFs] = useState(false);
     const [idselected, setidselected] = useState(null);
     const [show, setShow] = useState(false);
 
+    const cambiarestado = async (estado,idEstudiante)=>
+  {
+        let nuevo_estado = 0
+            if(estado != 1){
+// ----------------------Activar-----------------
+            nuevo_estado = 1;
+            }
+        try{
+
+            const response = await axios.post('http://localhost:4000/change/activo', {
+                nuevo_estado: nuevo_estado,
+                idEstudiante: idEstudiante,
+              });
+              if(response.status == 200){
+                Swal.fire({
+                    title: '¡Actualizado!',
+                    text: response.data.message,
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                  });
+                  setActualizarBandeja(true) ;
+                  setTimeout(() => {
+                    setActualizarBandeja(false);
+                  }, 3000); 
+              }
+
+        }catch (error) {
+      console.error(error);
+        }
+
+    }
     const handlepdf = (id) => {
         setverPDFs(true);
         setidselected(id);
@@ -44,6 +75,9 @@ export function GridEstudiantes() {
                         DatosEstudiantes.map((val, key) => {
                             return <div key={key} className='col-xs-12 col-sm-12 col-md-6 col-lg-4 carta-estudiante'>
                                 <div className='carta-estudiante-body'>
+                                    <div className='activa-desactiva'>
+                                        <button type='button' onClick={() => cambiarestado(val.activo,val.id)} className={val.activo === 1 ? 'btn btn-sm btn-danger boton-activacion' : 'btn btn-sm btn-success boton-activacion'}>{val.activo == 1 ? 'Desactivar': 'Activar'}</button>                              
+                                    </div>
                                     <div className='foto_perfil'>
                                         <img src={`data:image/jpg;base64,${val.foto}`} className='img-perfiles' alt="foto de perfil" />
                                     </div>
