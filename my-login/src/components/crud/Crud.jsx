@@ -8,6 +8,7 @@ import { VariablesProvider, VariablesContext } from './../../Context/VariablesGl
 export function Crud() {  
     const {ActualizarBandeja, setActualizarBandeja } = useContext(VariablesContext)
     const [Error, setError] = useState('');
+    const [Errorvalida, setErrorvalida] = useState(false);
     const [Imagen, setImagen] = useState(null);
     const [Estudiante, setEstudiante] = useState('');
     const [Cedula, setCedula] = useState('');
@@ -41,6 +42,61 @@ export function Crud() {
     const CreateEstudiante = async (event) =>{
         event.preventDefault();
 
+   
+        const patterntext = /^[A-Za-z\s]+$/;
+        const patternnumb = /^\d+$/;
+
+        if(Estudiante != ''){
+            if(!patterntext.test(Estudiante)){
+                let data = {
+                  mensaje: 'Caracter invalido en el campo Estudiante.',
+                  estado: '1'
+                };
+                setErrorvalida(data)
+                setTimeout(() => {
+                  setErrorvalida(false);
+                }, 3000);  
+                return
+              }
+        }
+        if(Edad != ''){
+          if(!patternnumb.test(Edad)){
+            let data = {
+              mensaje: 'Formato Incorrecto en el campo Edad.',
+              estado: '2'
+            };
+            setErrorvalida(data)
+            setTimeout(() => {
+              setErrorvalida(false);
+            }, 3000);  
+            return
+          }
+        }
+        if(Cedula != ''){
+            if(!patternnumb.test(Cedula)){
+              let data = {
+                mensaje: 'Formato Incorrecto en el campo Cedula.',
+                estado: '2'
+              };
+              setErrorvalida(data)
+              setTimeout(() => {
+                setErrorvalida(false);
+              }, 3000);  
+              return
+            }
+        }
+          if(!patternnumb.test(Mensualidad)){
+            let data = {
+              mensaje: 'Caracter invalido en el campo Mensualidad.',
+              estado: '1'
+            };
+            setErrorvalida(data)
+            setTimeout(() => {
+              setErrorvalida(false);
+            }, 3000);  
+            return
+          }
+    
         if(Estudiante == ''|| Cedula == ''|| Imagen == '' || Edad == ''|| Nivel == ''|| Grupo == ''|| Mensualidad == ''|| FechaIngreso == ''){
             setError('Todos los campos son Obligatorios')
             setTimeout(() => {
@@ -106,7 +162,7 @@ export function Crud() {
                     <h4>Registro de Estudiantes</h4>
                 </div>
                 <br />
-                {Error && <p>{Error}</p>}
+         
                 <div className='card-body'>
    
                     <div className='row'>
@@ -195,7 +251,6 @@ export function Crud() {
                             <Form.Control
                             type="date"
                             className='form-control' 
-                            placeholder="Fecha de Ingreso"
                             value={FechaIngreso}
                             onChange={(event) => setFechaIngreso(event.target.value)}
                             />
@@ -203,6 +258,8 @@ export function Crud() {
                         </div>
                     </div>
                     <br />
+                    {Errorvalida && <p style={{ color: 'red' }}>{Errorvalida.mensaje}</p>}
+                    {Error && <p style={{ color: 'red' }}>{Error}</p>}
                     <div className='d-flex right'>
                     <Link to={`/`}>
                     <button  type="button" className='btn btn-primary btn-sm' style={{ margin: '0.5%' }}>

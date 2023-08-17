@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 
 function RegistroForm() {
   const [error, setError] = useState(false);
+  const [errorvalida, setErrorvalida] = useState(false);
   const [nombreCompleto, setNombreCompleto] = useState('');
   const [UserName,setUserName] = useState('');
   const [fechaNacimiento, setFechaNacimiento] = useState('');
@@ -21,6 +22,18 @@ function RegistroForm() {
 
     if(password != confirmPassword){
       setError(true)
+      return
+    }
+    if(nombreCompleto == '' || UserName == ''|| fechaNacimiento == ''|| genero == '' || email == ''|| password == ''){
+     
+      let data = {
+        mensaje: 'Todos los campos son requeridos',
+        estado: '1'
+      };
+      setErrorvalida(data)
+      setTimeout(() => {
+        setErrorvalida(false);
+      }, 3000);  
       return
     }
     setError(false)
@@ -136,6 +149,7 @@ function RegistroForm() {
       </Button>
     </Form>
     <br />
+    {errorvalida && <p>{errorvalida.mensaje}</p>}
      {error && <p>La Contraseña no Coincide</p>}
      </>
   );
