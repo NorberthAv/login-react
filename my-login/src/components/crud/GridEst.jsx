@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import QRCode from "react-qr-code";
 import { VerPDF } from '../pdf/CarnetPDF';
 import { PDFViewer } from '@react-pdf/renderer';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import Modals from '../modals/Modals';
 // import {ModalLara} from '../modals/ModalLara';
 
@@ -125,13 +126,18 @@ export function GridEstudiantes() {
 
                                         <div className='d-flex center'>
                                             <Link to={`/detallados/${val.id}`}>
-                                                <button type="button" className='btn btn-sm btn-primary mg-1'>
-                                                    Ver
+                                                <button type="button" className='btn  btn-info mg-1'>
+                                                <FontAwesomeIcon icon={'fa-eye'} />
+                                                </button>
+                                            </Link>
+                                            <Link to={`/editar/${val.id}`}>
+                                                <button type="button" className='btn  btn-primary mg-1'>
+                                                <FontAwesomeIcon icon={'fa-edit'} />
                                                 </button>
                                             </Link>
                                             <Link>
-                                                <button type="button" className='btn btn-sm btn-primary mg-1' onClick={() => handlepdf(val.id)}>
-                                                    PDF
+                                                <button type="button" className='btn  btn-warning mg-1' onClick={() => handlepdf(val.id)}>
+                                                <FontAwesomeIcon icon={'fa-file'} />
                                                 </button>
                                             </Link>
                                         </div>

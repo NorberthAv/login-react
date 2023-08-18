@@ -1,14 +1,20 @@
 const express = require('express');
+const multer = require('multer');
 const cors = require('cors');
+const fs = require('fs');
 const jwt  = require('jsonwebtoken');
 const mysql = require('mysql');
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
-const fs = require('fs');
-const multer = require('multer');
 
 const app = express()
 const upload = multer({ dest: 'uploads/' });
+// const upload = multer({
+// 	dest: 'uploads/', // Cambia esto a la ruta de tu carpeta de destino
+// 	limits: {
+// 	  fileSize: 20 * 2024 * 2024, // Aumenta el límite a 10 MB
+// 	},
+//   });
 
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -58,7 +64,80 @@ app.get('/get/estudiantes', (req, res) => {
 		
 	});
 })
+app.post('/edit/estudiantes', upload.single('ImagenEstudiante'), (req, res) => {
+	
+	const ID = req.body.IDEstudiante;
+	const cedula = req.body.CedulaEstudiante;
+    const nombre = req.body.NameEstudiante;
+    const edad = req.body.EdadEstudiante;
+    const nivel = req.body.NivelEstudiante;
+    const grupo = req.body.GrupoEstudiante;
+    const mensualidad = req.body.MensualidadEstudiante;
+    const fechaingreso = req.body.FechaIngresoEstudiante;
+    const imagenpath = req.file.path;
+	
+// Lee el archivo como un Buffer
+	const buffer = fs.readFileSync(imagenpath);
+// Convierte el Buffer a Base64
+	const imagenbase64 = buffer.toString('base64');
+  
+	const values = [cedula, nombre, edad, nivel, grupo, mensualidad, fechaingreso, imagenbase64];
+  
+	pool.getConnection((err, connection) => {
+	  if (err) {
+		return res.status(500).send({ error: 'Error al obtener la conexión de la base de datos' });
+	  }
+	  connection.query("SELECT * FROM estudiantes WHERE id = ?", [ID], (err, result) => {
+		if (result && result.length > 0) {
+		  connection.query("UPDATE estudiantes SET cedula = ?, nombre = ?, edad = ?, nivel = ?, grupo = ?, mensualidad = ?, fecha_ingreso = ?, foto = ? WHERE id = ?", [...values, ID], (err, result) => {
+			connection.release();
+			if (err) {
+			  console.log(err, 'error-actualizar');
+			  return res.status(500).send({ error: 'Error al Actualizar los datos en la base de datos' });
+			}
+			return res.status(200).send({ message: 'Estudiante actualizado exitosamente' });
+		  });
+		} else {
+		  return res.status(500).send({ message: 'Estudiante no Encontrado' });
+		}
+	  });
+	});
+  });
+  app.post('/edit64/estudiantes', (req, res) => {
 
+	const ID = req.body.IDEstudiante;
+	const cedula = req.body.CedulaEstudiante;
+    const nombre = req.body.NameEstudiante;
+    const edad = req.body.EdadEstudiante;
+    const nivel = req.body.NivelEstudiante;
+    const grupo = req.body.GrupoEstudiante;
+    const mensualidad = req.body.MensualidadEstudiante;
+    const fechaingreso = req.body.FechaIngresoEstudiante;
+
+
+  console.log(fechaingreso);
+	const values = [cedula, nombre, edad, nivel, grupo, mensualidad, fechaingreso];
+  
+	pool.getConnection((err, connection) => {
+	  if (err) {
+		return res.status(500).send({ error: 'Error al obtener la conexión de la base de datos' });
+	  }
+	  connection.query("SELECT * FROM estudiantes WHERE id = ?", [ID], (err, result) => {
+		if (result && result.length > 0) {
+		  connection.query("UPDATE estudiantes SET cedula = ?, nombre = ?, edad = ?, nivel = ?, grupo = ?, mensualidad = ?, fecha_ingreso = ? WHERE id = ?", [...values, ID], (err, result) => {
+			connection.release();
+			if (err) {
+			  console.log(err, 'error-actualizar');
+			  return res.status(500).send({ error: 'Error al Actualizar los datos en la base de datos' });
+			}
+			return res.status(200).send({ message: 'Estudiante actualizado exitosamente' });
+		  });
+		} else {
+		  return res.status(500).send({ message: 'Estudiante no Encontrado' });
+		}
+	  });
+	});
+  });
 app.post('/registro/estudiantes',  upload.single('ImagenEstudiante'), (req, res) => {
 
 	const cedula = req.body.CedulaEstudiante;

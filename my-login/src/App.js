@@ -7,38 +7,38 @@ import{RutaProvider, RutaContext } from './Context/RutaContext';
 import { useState,useContext , useEffect } from 'react';
 import {Header} from './components/Header';
 import {Body_espacio} from './components/Cuerpo';
+import { MenuBoot } from './components/menu/MenuBootstrap';
 import DashboardVertical from './components/Dasboard';
 import {Sidebar} from './components/Sidebar';
 import {Crud} from './components/crud/Crud';
+import { Crudedit } from './components/crud/edit/Crudedit';
 import { GridEstudiantes } from './components/crud/GridEst';
-import { MenuBoot } from './components/menu/MenuBootstrap';
 import { Detallados } from './components/detallado/Detalle';
 
-export function AppWithContext() {
+export function AppWithContext({children}) {
   const location = useLocation();
   const { Session, updateGlobalVariable } = useContext(GlobalContext);
 
-  console.log(location)
- function RutaValidar(){
 
-switch (location.pathname) {
-  case '/':
-    return <GridEstudiantes/>
-    break;
-  case '/detalles':
-    return <GridEstudiantes/>
-    break;
-  case '/detalles/:id':
-      return <Detallados/>
-    break;
-  case '/registrar-estudiante':
-    return <Crud/>
-    break;
-  default:
-    break;
-}
+// function RutaValidar(){
 
- }
+// switch (location.pathname) {
+//   case '/':
+//     return <GridEstudiantes/>
+//     break;
+
+//   case '/editar/:id':
+//     return <Crudedit/>
+//     break;
+
+//   case '/registrar-estudiante':
+//     return <Crud/>
+//     break;
+
+//   default:
+//     break;
+// }
+//  }
   
   function ValidarSeccion() {
     if (Session.length > 0) {
@@ -46,7 +46,8 @@ switch (location.pathname) {
         <>
           <MenuBoot />
           <div className='container container-pad'>
-            {RutaValidar()} 
+            {children}
+            {/* {RutaValidar()}  */}
           </div>
         </>
       );

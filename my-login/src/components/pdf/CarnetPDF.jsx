@@ -1,8 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import moment from 'moment';
-import QRCode from "react-qr-code";
-import { Page, Image, Text, View, Document, StyleSheet, Svg, Path } from '@react-pdf/renderer';
+import { PDFViewer,Text, Document, Page, Image, View, StyleSheet } from '@react-pdf/renderer';
+import QRCode from 'qrcode.react'; // U
 
 // Create styles
 const styles = StyleSheet.create({
@@ -28,34 +28,49 @@ const styles = StyleSheet.create({
     col1center: {
         width: '10%',
         textAlign: 'center',
-    }
+    },
+    qrCodeContainer: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        height: '100%'
+      },
+      qrCode: {
+        width: 100,
+        height: 100
+      }
 });
 
-// // Create Document Component
-// const MyDocument = () => (
-//   <Document>
-//     <Page size="A4" style={styles.page}>
-//       <View style={styles.section}>
-//         <Text>Section #1</Text>
-//       </View>
-//       <View style={styles.section}>
-//         <Text>Section #2</Text>
-//       </View>
-//     </Page>
-//   </Document>
-// );
+
 export function VerPDF(IdEstudianteProp) {
     const [DataEstudiantepdf, setDataEstudiantepdf] = useState([]);
+    const [qrCodeImagePaths, setQRCodeImagePaths] = useState([]);
     useEffect(() => {
         EstudianteDetalle();
+        generateQRCodeImages(IdEstudianteProp.IdEstudianteProp); 
     }, []);
 
-    console.log(IdEstudianteProp.IdEstudianteProp);
+    const generateQRCodeImages = (IdEstudianteProp) => {
+        // Implementa tu lógica para generar imágenes de códigos QR
+        // Guarda las rutas de archivo de las imágenes en qrCodeImagePaths
+        const qrCodePaths = [];
+        DataEstudiantepdf.forEach((val, index) => {
+            const url = `http://127.0.0.1:3000/detallados/${IdEstudianteProp}`;
+            const qrCodeFileName = `qrcode_${val.id}.png`; // Nombre del archivo
+            const qrCodeFilePath = `path/to/your/image/folder/${qrCodeFileName}`; // Ruta completa del archivo
+            qrCodePaths.push(qrCodeFilePath);
+        
+            // Generar el código QR y guardarlo como archivo de imagen
+            const qrCodeDataUrl = QRCode.toDataURL(url);
+            // Aquí deberías implementar la lógica para guardar qrCodeDataUrl en qrCodeFilePath
+            // Puedes usar alguna biblioteca para manejar la escritura de archivos en el servidor, como 'fs' si estás utilizando Node.js en el servidor.
+          });
+        
+        // Genera las rutas de archivo y almacénalas en qrCodePaths
+        setQRCodeImagePaths(qrCodePaths);
+      };
 
-    const QRCodeToImage = (url) => {
-        console.log(typeof url);
-        return <QRCode value={url} size={100} bgColor="#282c34" fgColor="#fff" level="H" />;
-    };
 
     const EstudianteDetalle = async () => {
         let IdEstudiante = IdEstudianteProp.IdEstudianteProp;
@@ -79,6 +94,7 @@ export function VerPDF(IdEstudianteProp) {
 
 
     return <>
+
         <Document>
             <Page size="A4">
                 {
@@ -121,11 +137,12 @@ export function VerPDF(IdEstudianteProp) {
                                         </View>
                                     </View>
                                     <View style={styles.col1center}>
-                                        {/* <QRCode
-                                            level="Q"
-                                            style={{ width: 256, marginBottom: 50 }}
-                                            value={'hello world'}
-                                        /> */}
+                                    {qrCodeImagePaths.map((imagePath, index) => (
+                                    <View key={index} style={styles.qrCodeContainer}>
+                                        <Image src={imagePath} style={styles.qrCode} />
+                                    </View>
+                                    ))}
+ 
                                         {/* <Image
                                     src={<QRCode
                                         level="Q"
@@ -135,7 +152,7 @@ export function VerPDF(IdEstudianteProp) {
                                     /> */}
                                         {/* <Image src={generateQRCodeImage(`http://127.0.0.1:3000/detallados/${val.id}`)} /> */}
                                         {/* <QRCode value={`http://127.0.0.1:3000/detallados/${val.id}`} size={100} bgColor="#282c34" fgColor="#fff" level="H" /> */}
-                                        { QRCodeToImage(`http://127.0.0.1:3000/detallados/${val.id}`) }
+                                        {/* { QRCodeToImage(`http://127.0.0.1:3000/detallados/${val.id}`) } */}
                                     </View>
                                 </View>
                             </View>
@@ -144,6 +161,7 @@ export function VerPDF(IdEstudianteProp) {
                 }
             </Page>
         </Document>
+     
     </>
 }
 

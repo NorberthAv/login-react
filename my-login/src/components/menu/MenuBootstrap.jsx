@@ -17,13 +17,15 @@ export function MenuBoot() {
     const {ActualizarBandeja, setDatosEstudiantes,updateDatosEstudiantes } = useContext(VariablesContext)
     const name = Session[0].data.user ? Session[0].data.user : 'No esta Conectado'
     const location = useLocation();
+
     const handleLogout = () => {
         
         updateGlobalVariable([]);
         localStorage.clear();
         localStorage.removeItem('DatosEstudiantes');
         localStorage.removeItem('Session');
-        window.location.reload();
+        window.location.href = '/';
+        // window.location.reload();
         
     };
 
@@ -94,7 +96,7 @@ const Estudianteslist = () =>{
             <p>Usuario: {name}</p>
           </div>
         <button className='btn btn-outline-info' onClick={handleLogout}>
-                           Cerrar Sessión  <FontAwesomeIcon icon={['fas', 'times']} />
+            Cerrar Sessión  <FontAwesomeIcon icon={['fas', 'times']} />
         </button>
             <div className='bars'></div>
       </div>
